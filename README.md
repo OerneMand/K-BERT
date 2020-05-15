@@ -8,11 +8,11 @@ A simple example can be run with
 ```
 python3 run.py \ 
   --dataset_name qasc
-
+```
 
 The full list of parameter is as this
 
-``` 
+```
 python3 run.py \ 
   --dataset_name [qasc, arc, ag_news] \ 
   --knowledge_base [kbpedia, yago, probase] \ 
@@ -25,8 +25,6 @@ python3 run.py \
   --no_kg_augment \
   --minified \
   --learning_rate [float] \
-  
-
 ```
 
 The `config.py` contains the directories to the data and the path to the knowledge graphs.
