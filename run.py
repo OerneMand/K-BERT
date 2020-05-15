@@ -229,14 +229,14 @@ if __name__ == "__main__":
                 with torch.no_grad():
                     # Forward pass, calculate logit predictions
                     if task == "classification":
-                        logits = model(
+                        _, logits = model(
                             b_input_ids, 
                             position_ids = b_soft_pos_emb, 
                             token_type_ids = b_segment_emb, 
                             attention_mask = b_attention_mask, 
                             encoder_attention_mask = b_visibility_matrix, 
                             labels = b_labels
-                        )[0]
+                        )
                         # Move logits and labels to CPU
                         logits = logits.detach().cpu().numpy()
                         label_ids = b_labels.to('cpu').numpy()
@@ -321,16 +321,14 @@ if __name__ == "__main__":
         with torch.no_grad():
             # Forward pass, calculate logit predictions
             if task == "classification":
-                logits = model(
+                _, logits = model(
                     b_input_ids, 
                     position_ids = b_soft_pos_emb, 
                     token_type_ids = b_segment_emb, 
                     attention_mask = b_attention_mask, 
                     encoder_attention_mask = b_visibility_matrix, 
                     labels = b_labels
-                )[0]
-                print(logits)
-                import ipdb; ipdb.set_trace()
+                )
                 # Move logits and labels to CPU
                 logits = logits.detach().cpu().numpy()
                 label_ids = b_labels.to('cpu').numpy()
@@ -392,14 +390,14 @@ if __name__ == "__main__":
         with torch.no_grad():
             # Forward pass, calculate logit predictions
             if task == "classification":
-                logits = model(
+                _, logits = model(
                     b_input_ids, 
                     position_ids = b_soft_pos_emb, 
                     token_type_ids = b_segment_emb, 
                     attention_mask = b_attention_mask, 
                     encoder_attention_mask = b_visibility_matrix, 
                     labels = b_labels
-                )[0]
+                )
                 # Move logits and labels to CPU
                 logits = logits.detach().cpu().numpy()
                 label_ids = b_labels.to('cpu').numpy()

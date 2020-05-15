@@ -187,21 +187,21 @@ def load_data_from_path(dataset_name, kg, tokenizer, sequence_length, batch_size
     elif dataset_name == "arc":
         data_1 = pd.read_csv(directory + "ARC-Challenge/ARC-Challenge-Train.csv")
         data_2 = pd.read_csv(directory + "ARC-Easy/ARC-Easy-Train.csv")
-        data = pd.concat([data_1, data_2])
+        data = pd.concat([data_1, data_2]).sample(frac = 1)
         train = data.loc[:, ["question", "AnswerKey"]].reset_index(drop=True)
         train["AnswerKey"] = train.AnswerKey.replace({"1": "A", "2": "B", "3": "C", "4":"D"})   
         train["question"] = train.question.str.replace("\(1\)", "(A)").str.replace("\(2\)", "(B)").str.replace("\(3\)", "(C)").str.replace("\(4\)", "(D)")
         
         data_1 = pd.read_csv(directory + "ARC-Challenge/ARC-Challenge-Dev.csv")
         data_2 = pd.read_csv(directory + "ARC-Easy/ARC-Easy-Dev.csv")
-        data = pd.concat([data_1, data_2])
+        data = pd.concat([data_1, data_2]).sample(frac = 1)
         validation = data.loc[:, ["question", "AnswerKey"]].reset_index(drop=True)
         validation["AnswerKey"] = validation.AnswerKey.replace({"1": "A", "2": "B", "3": "C", "4":"D"})
         validation["question"] = validation.question.str.replace("\(1\)", "(A)").str.replace("\(2\)", "(B)").str.replace("\(3\)", "(C)").str.replace("\(4\)", "(D)")  
         
         data_1 = pd.read_csv(directory + "ARC-Challenge/ARC-Challenge-Test.csv")
         data_2 = pd.read_csv(directory + "ARC-Easy/ARC-Easy-Test.csv")
-        data = pd.concat([data_1, data_2])
+        data = pd.concat([data_1, data_2]).sample(frac = 1)
         test = data.loc[:, ["question", "AnswerKey"]].reset_index(drop=True)
         test["AnswerKey"] = test.AnswerKey.replace({"1": "A", "2": "B", "3": "C", "4":"D"})
         test["question"] = test.question.str.replace("\(1\)", "(A)").str.replace("\(2\)", "(B)").str.replace("\(3\)", "(C)").str.replace("\(4\)", "(D)")
@@ -209,16 +209,16 @@ def load_data_from_path(dataset_name, kg, tokenizer, sequence_length, batch_size
     elif dataset_name == "qasc":
         with jsonlines.open(directory + "train.jsonl") as f: 
             train = pd.DataFrame([line for line in f])
-        train["question"] = train.formatted_question #train.combinedfact + " " + train.formatted_question
+        train["question"] = train.formatted_question #train.fact2 + " " + 
         train.rename({"answerKey": "AnswerKey"}, inplace = True, axis = 1)
         train = train.loc[:, ["question", "AnswerKey"]]
         train, validation = train_test_split(
-            train, test_size=0.2
+            train, test_size=0.25
         )
         
         with jsonlines.open(directory + "dev.jsonl") as f: 
             test = pd.DataFrame([line for line in f]) 
-        test["question"] = test.formatted_question #test.combinedfact + " " + test.formatted_question
+        test["question"] = test.formatted_question #test.fact2 + " " + 
         test.rename({"answerKey": "AnswerKey"}, inplace = True, axis = 1)
         test = test.loc[:, ["question", "AnswerKey"]]
 

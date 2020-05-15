@@ -96,14 +96,13 @@ class KnowledgeInjector():
             turn_off_injection = False
             for soft_position, token in enumerate(text):
                 if token in ["a", "b", "c", "d"]:
-                    #turn_off_injection = True
-                    relations = []
-                #if self.task == "qa" and token == "[SEP]":
-                    #turn_off_injection = True
-                else:#if not turn_off_injection:
+                    turn_off_injection = True
+                
+                if not turn_off_injection:
                     relations = [entity for combination in range(self.LOOK_BACK + 1) for entity in self.kg.get(" ".join(history[combination:self.LOOK_BACK] + [token]), [])][:self.MAX_RELATIONS]
-                # elif turn_off_injection:
-                #     relations = []
+                elif turn_off_injection:# or len(token) < 2:
+                    relations = []
+
                 sentence_tree.append((token, relations))
                 relations_hard_pos = []
                 relations_soft_pos = []
@@ -117,6 +116,8 @@ class KnowledgeInjector():
                 hard_ids.append(hard_position)
 
                 for j, relation in enumerate(relations):
+                    if relation == ["is", "a", "word"]:
+                        continue
                     self.unique_insert.add(" ".join(relation))
                     self.entity_insertions += 1
                     relations_soft_pos.append([soft_position + offset for offset in range(1, len(relation)+1)])
